@@ -34,24 +34,28 @@ public static class ArraysTester {
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
     private static double[] MultiplesOf(double number, int length)
     {
-        /*
-            Create a list of doubles
-            Create a count element and an end element
-            While the count does not equal where you want to end the loop, keep adding to the list the number by the count
-            Make sure the list returns as an array
-        */
+        // TODO Problem 1 Start
+        // Remember: Using comments in your program, write down your process for solving this problem
+        // step by step before you write the code. The plan should be clear enough that it could
+        // be implemented by another person.
 
-        List<double> multiples = new List<double>();
-        int count = 1;
-        int end = length + 1;
-        
-        while (count != end){
-            multiples.Add(number * count);
-            count ++;
+        // Create an empty array to hold the multipes
+        double[] array = {};
+
+        // Loop through all of the integers in length
+        for (int i = 1; i < length; i++) {
+            // for each integer multiply the integer by the number
+            double multiple = i * number;
+
+            // resize the array
+            Array.Resize(ref array, array.Length + 1);
+
+            // store the new number in the array
+            array[array.Length-1] = multiple;
         }
-        double[] array = multiples.ToArray();
-        return array;
 
+        // return the array
+        return array; // replace this return statement with your own
     }
     
     /// <summary>
@@ -64,31 +68,30 @@ public static class ArraysTester {
     /// </summary>
     private static void RotateListRight(List<int> data, int amount)
     {
+        // TODO Problem 2 Start
+        // Remember: Using comments in your program, write down your process for solving this problem
+        // step by step before you write the code. The plan should be clear enough that it could
+        // be implemented by another person.
 
-        /*
-            Make two lists. 
-            To the first list, add the numbers after the amount
-            The the second list, add the numbers before the amount
-            Add the second list to the end of the first list
-            Make sure that it returns the data correctly
-        */
-        List <int> lastNumbers = new List<int>();
-        List <int> firstNumbers = new List<int>();
+        // Get the rotation amount relative to the array
+        amount = amount % data.Count;
 
-        foreach (var item in data){
-            if (item > amount){
-                lastNumbers.Add(item);
-            }
+        // Create a temporary array
+        int[] tempArray = new int[data.Count];
+
+        // Copy elements to temp array
+        for (int i=0; i < amount; i++) {
+            tempArray[i] = data[data.Count - amount + i];
+        }        
+
+        // Perform the rotation
+        for (int i = amount; i < data.Count; i++) {
+            tempArray[i] = data[i - amount];
         }
-        foreach (var item in data){
-            if (item <= amount){
-                firstNumbers.Add(item);
-            }
-        }
-        lastNumbers.AddRange(firstNumbers);
-        data.Clear();
-        data.AddRange(lastNumbers);
 
-        return;
+        // Copy elements back to the original list
+        for (int i=0; i < data.Count; i++) {
+            data[i] = tempArray[i];
+        }
     }
 }
