@@ -34,12 +34,24 @@ public static class ArraysTester {
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
     private static double[] MultiplesOf(double number, int length)
     {
-        // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        /*
+            Create a list of doubles
+            Create a count element and an end element
+            While the count does not equal where you want to end the loop, keep adding to the list the number by the count
+            Make sure the list returns as an array
+        */
 
-        return new double[0]; // replace this return statement with your own
+        List<double> multiples = new List<double>();
+        int count = 1;
+        int end = length + 1;
+        
+        while (count != end){
+            multiples.Add(number * count);
+            count ++;
+        }
+        double[] array = multiples.ToArray();
+        return array;
+
     }
     
     /// <summary>
@@ -52,10 +64,31 @@ public static class ArraysTester {
     /// </summary>
     private static void RotateListRight(List<int> data, int amount)
     {
-        // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
 
+        /*
+            Make two lists. 
+            To the first list, add the numbers after the amount
+            The the second list, add the numbers before the amount
+            Add the second list to the end of the first list
+            Make sure that it returns the data correctly
+        */
+        List <int> lastNumbers = new List<int>();
+        List <int> firstNumbers = new List<int>();
+
+        foreach (var item in data){
+            if (item > amount){
+                lastNumbers.Add(item);
+            }
+        }
+        foreach (var item in data){
+            if (item <= amount){
+                firstNumbers.Add(item);
+            }
+        }
+        lastNumbers.AddRange(firstNumbers);
+        data.Clear();
+        data.AddRange(lastNumbers);
+
+        return;
     }
 }
