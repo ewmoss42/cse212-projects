@@ -111,6 +111,15 @@ public static class SetsAndMapsTester {
         // To display the pair correctly use something like:
         // Console.WriteLine($"{word} & {pair}");
         // Each pair of words should displayed on its own line.
+        var set = new HashSet<string>(words);
+        foreach (var word in words) {
+            var reversed = new string(word.ToCharArray().Reverse().ToArray());
+            if (set.Contains(reversed) && string.CompareOrdinal(word, reversed) < 0 && word != reversed) {
+                Console.WriteLine($"{reversed} & {word}");
+            }
+            set.Add(word);
+        }
+        
     }
 
     /// <summary>
@@ -132,6 +141,13 @@ public static class SetsAndMapsTester {
         foreach (var line in File.ReadLines(filename)) {
             var fields = line.Split(",");
             // Todo Problem 2 - ADD YOUR CODE HERE
+            
+            var degree = fields[3].Trim(); // Assuming the degree is in the fourth column
+            if (degrees.ContainsKey(degree)) {
+                degrees[degree]++;
+            } else {
+                degrees[degree] = 1;
+            }
         }
 
         return degrees;
@@ -158,14 +174,39 @@ public static class SetsAndMapsTester {
     /// #############
     private static bool IsAnagram(string word1, string word2) {
         // Todo Problem 3 - ADD YOUR CODE HERE
+        // Normalize words by converting to lowercase and removing spaces
+        word1 = word1.ToLower().Replace(" ", "");
+        word2 = word2.ToLower().Replace(" ", "");
+        // If lengths are not equal, they cannot be anagrams
+        if (word1.Length != word2.Length) 
         return false;
+
+        // Dictionary to count character occurrences in the first word
+        var dict = new Dictionary<char, int>();
+        foreach (var c in word1) {
+            if (dict.ContainsKey(c)) 
+                dict[c]++;
+            else 
+                dict[c] = 1;
+        }
+        // Iterate through the second word and check counts in the dictionary
+        foreach (var c in word2) {
+            if (!dict.ContainsKey(c)) 
+                return false;
+
+            dict[c]--;
+            if (dict[c] < 0) 
+                return false;
+        }
+        // If all characters are accounted for and their counts are zero, they are anagrams
+        return true;
     }
 
     /// <summary>
     /// Sets up the maze dictionary for problem 4
     /// </summary>
-    private static Dictionary<ValueTuple<int, int>, bool[]> SetupMazeMap() {
-        Dictionary<ValueTuple<int, int>, bool[]> map = new() {
+    private static Dictionary<(int, int), bool[]> SetupMazeMap() {
+        var map = new Dictionary<(int, int), bool[]>() {
             { (1, 1), new[] { false, true, false, true } },
             { (1, 2), new[] { false, true, true, false } },
             { (1, 3), new[] { false, false, false, false } },
@@ -235,5 +276,14 @@ public static class SetsAndMapsTester {
         // 1. Add code in FeatureCollection.cs to describe the JSON using classes and properties 
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to print out each place a earthquake has happened today and its magitude.
+        if (featureCollection != null && featureCollection.Features != null) {
+            
+            foreach (var feature in featureCollection.Features) {
+                Console.WriteLine($"{feature.Properties.Place} - Mag {feature.Properties.Mag}");
+            }
+        }
+        else {
+            Console.WriteLine("No earthquake data available.");
+        }
     }
 }
